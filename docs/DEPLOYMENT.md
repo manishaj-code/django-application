@@ -168,6 +168,12 @@ PostgreSQL database in Singapore. **Both are on the free plan.**
    `https://<service-name>.onrender.com/`, and the admin is at `/admin/`.
 5. Every push to `main` redeploys automatically. Migrations run at start-up.
 
+`NUM_PROXIES=3` is set because Render (behind Cloudflare) appends three
+entries to `X-Forwarded-For`. The visitor's IP is the third from the
+right. This was verified on the live service, and client-supplied values
+can't shift it. The login, sign-up, password-reset and contact rate limits
+depend on it.
+
 Free-plan limits (from Render's docs at the time of writing):
 
 - The service sleeps after 15 minutes without traffic. The next visit takes

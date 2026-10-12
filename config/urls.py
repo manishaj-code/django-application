@@ -20,7 +20,6 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("content/", include("content.urls")),
     path("healthz/", core_views.healthz, name="healthz"),
-    path("proxy-headers-check/", core_views.proxy_headers),  # TEMPORARY
     path("", include("core.urls")),
 ]
 

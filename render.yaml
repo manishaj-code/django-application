@@ -34,8 +34,11 @@ services:
         value: "True"
       - key: FORWARDED_ALLOW_IPS
         value: "*"
+      # Render appends client IP, Cloudflare IP and an internal proxy IP to
+      # X-Forwarded-For (verified on this service); the client is 3rd from the
+      # right and client-supplied values can't shift it.
       - key: NUM_PROXIES
-        value: "0"
+        value: "3"
       # No SMTP yet: emails (password reset links) are written to the service
       # logs, visible only in your Render dashboard. Replace with SMTP settings
       # (EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend, EMAIL_HOST,
