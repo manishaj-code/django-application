@@ -1,0 +1,12 @@
+<footer class="border-top bg-body-tertiary mt-5">
+  <div class="container py-4 d-flex flex-column flex-md-row justify-content-between gap-2 small">
+    <p class="mb-0 text-body-secondary">&copy; {% now "Y" %} {{ SITE_NAME }}. All rights reserved.</p>
+    <nav aria-label="Footer">
+      <ul class="list-inline mb-0">
+        <li class="list-inline-item"><a href="{% url 'content:list' %}">Content</a></li>
+        <li class="list-inline-item"><a href="{% url 'core:about' %}">About</a></li>
+        <li class="list-inline-item"><a href="{% url 'core:contact' %}">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>

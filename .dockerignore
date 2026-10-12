@@ -1,0 +1,16 @@
+.git
+.env
+.env.*
+!.env.example
+myenv/
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.playwright-mcp/
+staticfiles/
+media/
+sent_emails/
+backups/
+db.sqlite3

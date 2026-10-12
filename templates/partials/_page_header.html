@@ -1,0 +1,11 @@
+{% comment %}
+Page title band shared by top-level pages.
+Usage: {% include "partials/_page_header.html" with title="About us" subtitle="..." eyebrow="..." %}
+{% endcomment %}
+<section class="page-header hero border-bottom">
+  <div class="container py-5">
+    {% if eyebrow %}<p class="text-uppercase fw-semibold small text-primary-emphasis mb-2 eyebrow">{{ eyebrow }}</p>{% endif %}
+    <h1 class="display-6 fw-bold mb-2">{{ title }}</h1>
+    {% if subtitle %}<p class="lead text-body-secondary mb-0 page-header-lead">{{ subtitle }}</p>{% endif %}
+  </div>
+</section>

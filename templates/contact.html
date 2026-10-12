@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Contact · {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}Contact {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+{% include "partials/_page_header.html" with eyebrow="Contact" title="Get in touch" subtitle="Questions, corrections or suggestions? Send us a message and our team will get back to you." %}
+
+<section class="container py-5">
+  <div class="row g-4 g-lg-5">
+    <div class="col-lg-7">
+      <div class="card shadow-sm rounded-4">
+        <div class="card-body p-4 p-md-5">
+          <h2 class="h4 fw-semibold mb-1">Send us a message</h2>
+          <p class="text-body-secondary small mb-4">Fields marked <span class="text-danger">*</span> are required.</p>
+          <form method="post" novalidate data-loading-form>
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}
+              </div>
+            {% endif %}
+            <div class="row g-md-3">
+              <div class="col-md-6">{% include "partials/_form_field.html" with field=form.name %}</div>
+              <div class="col-md-6">{% include "partials/_form_field.html" with field=form.email %}</div>
+            </div>
+            {% include "partials/_form_field.html" with field=form.subject %}
+            {% include "partials/_form_field.html" with field=form.message %}
+            <div class="honeypot" aria-hidden="true">
+              {% include "partials/_form_field.html" with field=form.website %}
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg px-4" data-loading-text="Sending…">Send message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <aside class="col-lg-5" aria-label="Contact information">
+      <div class="contact-aside rounded-4 p-4 p-md-5 h-100">
+        <h2 class="h5 fw-semibold mb-4">How we can help</h2>
+        <ul class="list-unstyled contact-points mb-4">
+          <li>
+            <span class="feature-icon feature-icon-sm" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            </span>
+            <div><strong>General questions</strong><br><span class="text-body-secondary">About our content, the site or your account.</span></div>
+          </li>
+          <li>
+            <span class="feature-icon feature-icon-sm" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+            </span>
+            <div><strong>Corrections</strong><br><span class="text-body-secondary">Spotted a mistake? Include the article title.</span></div>
+          </li>
+          <li>
+            <span class="feature-icon feature-icon-sm" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>
+            </span>
+            <div><strong>Ideas &amp; suggestions</strong><br><span class="text-body-secondary">Tell us what you'd like to read about next.</span></div>
+          </li>
+        </ul>
+        <hr>
+        <p class="small text-body-secondary mb-2">
+          We only use your details to reply to your message.
+        </p>
+        {% if not user.is_authenticated %}
+          <p class="small mb-0">
+            Forgot your password? <a href="{% url 'password_reset' %}">Reset it here</a> — no need to write to us.
+          </p>
+        {% endif %}
+      </div>
+    </aside>
+  </div>
+</section>
+{% endblock %}

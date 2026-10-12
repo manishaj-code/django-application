@@ -1,0 +1,27 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{% block meta_description %}{{ SITE_NAME }}{% endblock %}">
+  <title>{% block title %}{{ SITE_NAME }}{% endblock %}</title>
+  <link rel="icon" href="{% static 'images/favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+  <a class="visually-hidden-focusable btn btn-primary position-absolute m-2 skip-link" href="#main">Skip to main content</a>
+  {% include "partials/_navbar.html" %}
+  <main id="main" class="flex-grow-1" tabindex="-1">
+    {% if messages %}
+      <div class="container pt-4">
+        {% include "partials/_messages.html" %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  {% include "partials/_footer.html" %}
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/site.js' %}"></script>
+</body>
+</html>

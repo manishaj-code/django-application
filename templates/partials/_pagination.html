@@ -1,0 +1,26 @@
+{% if is_paginated %}
+  <nav aria-label="Pagination" class="mt-4">
+    <ul class="pagination justify-content-center flex-wrap">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="{% querystring page=page_obj.previous_page_number %}" rel="prev">Previous</a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">Previous</span></li>
+      {% endif %}
+      {% for number in page_obj.paginator.get_elided_page_range %}
+        {% if number == page_obj.number %}
+          <li class="page-item active" aria-current="page"><span class="page-link">{{ number }}</span></li>
+        {% elif number == page_obj.paginator.ELLIPSIS %}
+          <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="{% querystring page=number %}">{{ number }}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="{% querystring page=page_obj.next_page_number %}" rel="next">Next</a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">Next</span></li>
+      {% endif %}
+    </ul>
+    <p class="text-center text-body-secondary small">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+  </nav>
+{% endif %}

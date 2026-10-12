@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% comment %}
+Shared narrow, centred card layout for authentication pages.
+Child templates fill the "card_title", "card_intro", "card_body" and "card_footer" blocks.
+{% endcomment %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-sm-10 col-md-8 col-lg-5">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h1 class="h3 mb-3">{% block card_title %}{% endblock %}</h1>
+          {% block card_intro %}{% endblock %}
+          {% block card_body %}{% endblock %}
+        </div>
+      </div>
+      <div class="text-center mt-3 small">{% block card_footer %}{% endblock %}</div>
+    </div>
+  </div>
+</div>
+{% endblock %}

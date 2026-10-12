@@ -1,0 +1,159 @@
+/* Site-specific styles layered on top of Bootstrap 5. Keep this small. */
+
+:root {
+  --site-max-reading: 42rem;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+}
+
+/* Skip link sits above the navbar when focused. */
+.skip-link {
+  z-index: 1080;
+}
+
+main:focus {
+  outline: none;
+}
+
+/* Clearly visible keyboard focus everywhere. */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible {
+  outline: 3px solid #0a58ca;
+  outline-offset: 2px;
+}
+
+.hero {
+  background: linear-gradient(180deg, var(--bs-tertiary-bg) 0%, var(--bs-body-bg) 100%);
+}
+
+/* Page header band (About, Contact) */
+.eyebrow {
+  letter-spacing: 0.08em;
+}
+
+.page-header-lead {
+  max-width: 40rem;
+}
+
+/* Icon badges used on feature cards and the contact sidebar */
+.feature-icon {
+  align-items: center;
+  background: var(--bs-primary-bg-subtle);
+  border-radius: 0.75rem;
+  color: var(--bs-primary-text-emphasis);
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 3rem;
+  justify-content: center;
+  width: 3rem;
+}
+
+.feature-icon-sm {
+  border-radius: 0.6rem;
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+/* About page */
+.about-panel,
+.contact-aside {
+  background: var(--bs-tertiary-bg);
+  border: 1px solid var(--bs-border-color-translucent);
+}
+
+.about-steps li,
+.contact-points li {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.about-steps li + li,
+.contact-points li + li {
+  margin-top: 1.25rem;
+}
+
+.about-step-num {
+  align-items: center;
+  background: var(--bs-primary);
+  border-radius: 50%;
+  color: #fff;
+  display: inline-flex;
+  flex-shrink: 0;
+  font-weight: 700;
+  height: 2rem;
+  justify-content: center;
+  width: 2rem;
+}
+
+/* Call-to-action band: dark primary keeps white text above 4.5:1 contrast. */
+.cta-band {
+  background: #0a3d91;
+  color: #fff;
+}
+
+/* Content cards */
+.content-card {
+  transition: box-shadow 0.15s ease-in-out;
+}
+
+.content-card:hover,
+.content-card:focus-within {
+  box-shadow: var(--bs-box-shadow) !important;
+}
+
+.content-card-img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  width: 100%;
+}
+
+.content-card-placeholder {
+  background: var(--bs-secondary-bg);
+  color: var(--bs-secondary-color);
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+/* Article body: comfortable reading width and rhythm. */
+.content-body {
+  font-size: 1.075rem;
+  line-height: 1.75;
+  max-width: var(--site-max-reading);
+  overflow-wrap: anywhere;
+}
+
+.detail-image {
+  max-height: 28rem;
+  object-fit: cover;
+  width: 100%;
+}
+
+.content-search {
+  min-width: min(100%, 22rem);
+}
+
+/* Contact-form honeypot: hidden from sighted and screen-reader users. */
+.honeypot {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Disabled submit buttons while a form is being sent. */
+.btn[aria-busy="true"] {
+  cursor: progress;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content-card {
+    transition: none;
+  }
+}

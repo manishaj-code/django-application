@@ -1,0 +1,17 @@
+{% extends "registration/_auth_card.html" %}
+
+{% block title %}Create account · {{ SITE_NAME }}{% endblock %}
+{% block card_title %}Create your account{% endblock %}
+{% block card_intro %}<p class="text-body-secondary">Fields marked <span class="text-danger">*</span> are required.</p>{% endblock %}
+
+{% block card_body %}
+<form method="post" novalidate data-loading-form>
+  {% csrf_token %}
+  {% include "partials/_form.html" %}
+  <button type="submit" class="btn btn-primary w-100" data-loading-text="Creating account…">Create account</button>
+</form>
+{% endblock %}
+
+{% block card_footer %}
+Already registered? <a href="{% url 'login' %}">Sign in</a>.
+{% endblock %}

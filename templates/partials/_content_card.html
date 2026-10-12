@@ -1,0 +1,23 @@
+<article class="card h-100 shadow-sm content-card">
+  {% if item.featured_image %}
+    <img src="{{ item.featured_image.url }}" class="card-img-top content-card-img" alt="" loading="lazy">
+  {% else %}
+    <div class="card-img-top content-card-img content-card-placeholder d-flex align-items-center justify-content-center" aria-hidden="true">
+      <span>{{ item.title|first|upper }}</span>
+    </div>
+  {% endif %}
+  <div class="card-body d-flex flex-column">
+    {% if item.category %}
+      <p class="mb-2"><span class="badge text-bg-light border">{{ item.category.name }}</span></p>
+    {% endif %}
+    <h3 class="h5 card-title">
+      <a class="stretched-link text-decoration-none" href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+    </h3>
+    {% if item.summary %}
+      <p class="card-text text-body-secondary">{{ item.summary|truncatechars:160 }}</p>
+    {% endif %}
+    <p class="card-text mt-auto small text-body-secondary">
+      <time datetime="{{ item.published_at|date:'c' }}">{{ item.published_at|date:"F j, Y" }}</time>
+    </p>
+  </div>
+</article>

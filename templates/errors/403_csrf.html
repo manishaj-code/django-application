@@ -1,0 +1,6 @@
+{% extends "errors/_error.html" %}
+
+{% block heading_text %}Session expired{% endblock %}
+{% block code %}403{% endblock %}
+{% block heading %}Session expired{% endblock %}
+{% block message %}Your form could not be submitted because its security token was missing or out of date. This usually happens when a page has been open for a long time or cookies are blocked. Go back, reload the page and try again.{% endblock %}

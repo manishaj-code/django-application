@@ -1,0 +1,15 @@
+{% extends "registration/_auth_card.html" %}
+
+{% block title %}Edit profile · {{ SITE_NAME }}{% endblock %}
+{% block card_title %}Edit profile{% endblock %}
+
+{% block card_body %}
+<form method="post" novalidate data-loading-form>
+  {% csrf_token %}
+  {% include "partials/_form.html" %}
+  <div class="d-flex gap-2">
+    <button type="submit" class="btn btn-primary" data-loading-text="Saving…">Save changes</button>
+    <a class="btn btn-outline-secondary" href="{% url 'accounts:profile' %}">Cancel</a>
+  </div>
+</form>
+{% endblock %}

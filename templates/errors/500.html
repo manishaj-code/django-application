@@ -1,0 +1,24 @@
+{% load static %}<!doctype html>
+{% comment %}
+Self-contained on purpose: rendered without a request or context processors,
+so it must not depend on the database, the user or the shared base template.
+{% endcomment %}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Server error</title>
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+</head>
+<body class="d-flex align-items-center min-vh-100">
+  <main class="container text-center py-5">
+    <p class="display-1 fw-bold text-body-secondary mb-0">500</p>
+    <h1 class="h2 mb-3">Something went wrong</h1>
+    <p class="text-body-secondary mb-4">
+      An unexpected error occurred on our side. It has been logged and we'll look into it.
+      Please try again in a few minutes.
+    </p>
+    <a class="btn btn-primary" href="/">Go to the home page</a>
+  </main>
+</body>
+</html>

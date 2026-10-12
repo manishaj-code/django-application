@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}About · {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}About {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+{% include "partials/_page_header.html" with eyebrow="About us" title="About "|add:SITE_NAME subtitle="Where our team publishes news, articles and updates — free for everyone to read." %}
+
+<section class="container py-5">
+  <div class="row g-5 align-items-center">
+    <div class="col-lg-6">
+      <h2 class="h3 fw-semibold mb-3">Who we are</h2>
+      <p>
+        {{ SITE_NAME }} is our home for sharing what matters: announcements,
+        practical guides and stories from our work. Every item is written
+        and reviewed by our editors before it is published.
+      </p>
+      <p class="mb-0">
+        Browse the <a href="{% url 'content:list' %}">content library</a> to
+        see what's new, search for a topic, or filter by category to find
+        what interests you.
+      </p>
+    </div>
+    <div class="col-lg-6">
+      <div class="about-panel rounded-4 p-4 p-md-5">
+        <h2 class="h5 fw-semibold mb-4">How it works</h2>
+        <ol class="about-steps list-unstyled mb-0">
+          <li>
+            <span class="about-step-num" aria-hidden="true">1</span>
+            <div><strong>Editors write</strong><br><span class="text-body-secondary">Content is drafted and reviewed in our admin panel.</span></div>
+          </li>
+          <li>
+            <span class="about-step-num" aria-hidden="true">2</span>
+            <div><strong>We publish</strong><br><span class="text-body-secondary">Items go live immediately or at a scheduled time.</span></div>
+          </li>
+          <li>
+            <span class="about-step-num" aria-hidden="true">3</span>
+            <div><strong>You read</strong><br><span class="text-body-secondary">Everything is free to browse on any device.</span></div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-body-tertiary border-top border-bottom" aria-labelledby="offer-heading">
+  <div class="container py-5">
+    <h2 id="offer-heading" class="h3 fw-semibold text-center mb-4">What you'll find here</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div class="col">
+        <div class="card h-100 border-0 shadow-sm feature-card">
+          <div class="card-body p-4">
+            <div class="feature-icon mb-3" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h8M8 8h4"/></svg>
+            </div>
+            <h3 class="h5">Curated content</h3>
+            <p class="text-body-secondary mb-0">News, guides and updates, reviewed by our editors before they go live.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100 border-0 shadow-sm feature-card">
+          <div class="card-body p-4">
+            <div class="feature-icon mb-3" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+            </div>
+            <h3 class="h5">Easy to find</h3>
+            <p class="text-body-secondary mb-0">Search everything we've published or browse by category.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100 border-0 shadow-sm feature-card">
+          <div class="card-body p-4">
+            <div class="feature-icon mb-3" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <h3 class="h5">Your privacy</h3>
+            <p class="text-body-secondary mb-0">A free account keeps your profile in one place. We only email you about your account.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container py-5">
+  <div class="cta-band rounded-4 p-4 p-md-5 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+    <div>
+      <h2 class="h4 fw-semibold mb-1">Questions or suggestions?</h2>
+      <p class="mb-0">We'd love to hear from you — send us a message any time.</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-light" href="{% url 'core:contact' %}">Contact us</a>
+      <a class="btn btn-outline-light" href="{% url 'content:list' %}">Browse content</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

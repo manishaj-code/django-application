@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}{% if category %}{{ category.name }}{% else %}Content{% endif %} · {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
+    <div>
+      <h1 class="mb-1">{% if category %}{{ category.name }}{% else %}All content{% endif %}</h1>
+      {% if category.description %}<p class="text-body-secondary mb-0">{{ category.description }}</p>{% endif %}
+    </div>
+    <form method="get" action="{% url 'content:list' %}" role="search" class="d-flex gap-2 content-search">
+      {% if category %}<input type="hidden" name="category" value="{{ category.slug }}">{% endif %}
+      <label for="search-q" class="visually-hidden">Search content</label>
+      <input id="search-q" class="form-control" type="search" name="q" value="{{ query }}" placeholder="Search…" maxlength="100">
+      <button class="btn btn-outline-primary" type="submit">Search</button>
+    </form>
+  </div>
+
+  {% if categories %}
+    <nav aria-label="Categories" class="mb-4">
+      <ul class="nav nav-pills flex-wrap gap-1">
+        <li class="nav-item">
+          <a class="nav-link{% if not category %} active" aria-current="page{% endif %}" href="{% url 'content:list' %}{% if query %}?q={{ query|urlencode }}{% endif %}">All</a>
+        </li>
+        {% for cat in categories %}
+          <li class="nav-item">
+            <a class="nav-link{% if category and category.pk == cat.pk %} active" aria-current="page{% endif %}"
+               href="{% url 'content:list' %}?category={{ cat.slug }}{% if query %}&amp;q={{ query|urlencode }}{% endif %}">{{ cat.name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  {% endif %}
+
+  {% if query %}
+    <p class="text-body-secondary" role="status">
+      {{ paginator.count }} result{{ paginator.count|pluralize }} for “{{ query }}”.
+      <a href="{% url 'content:list' %}{% if category %}?category={{ category.slug }}{% endif %}">Clear search</a>
+    </p>
+  {% endif %}
+
+  {% if items %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      {% for item in items %}
+        <div class="col">{% include "partials/_content_card.html" %}</div>
+      {% endfor %}
+    </div>
+    {% include "partials/_pagination.html" %}
+  {% else %}
+    <div class="empty-state text-center py-5 border rounded-3 bg-body-tertiary">
+      {% if query %}
+        <h2 class="h5">No matches</h2>
+        <p class="text-body-secondary mb-0">Try different keywords or browse all content.</p>
+      {% else %}
+        <h2 class="h5">Nothing here yet</h2>
+        <p class="text-body-secondary mb-0">Content will appear here once it is published.</p>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

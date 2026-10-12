@@ -1,0 +1,18 @@
+{% extends "registration/_auth_card.html" %}
+
+{% block title %}Sign in · {{ SITE_NAME }}{% endblock %}
+{% block card_title %}Sign in{% endblock %}
+
+{% block card_body %}
+<form method="post" novalidate data-loading-form>
+  {% csrf_token %}
+  {% include "partials/_form.html" %}
+  <input type="hidden" name="next" value="{{ next }}">
+  <button type="submit" class="btn btn-primary w-100" data-loading-text="Signing in…">Sign in</button>
+</form>
+<p class="mt-3 mb-0 text-center"><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+{% endblock %}
+
+{% block card_footer %}
+No account yet? <a href="{% url 'accounts:register' %}">Create one</a>.
+{% endblock %}

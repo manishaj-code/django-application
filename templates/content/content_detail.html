@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item.title }} · {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{{ item.summary|default:item.title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <article class="col-lg-8">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Home</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'content:list' %}">Content</a></li>
+          {% if item.category %}
+            <li class="breadcrumb-item"><a href="{{ item.category.get_absolute_url }}">{{ item.category.name }}</a></li>
+          {% endif %}
+          <li class="breadcrumb-item active" aria-current="page">{{ item.title|truncatechars:40 }}</li>
+        </ol>
+      </nav>
+
+      {% if not item.is_public %}
+        <div class="alert alert-warning" role="status">
+          <strong>Preview.</strong>
+          {% if item.is_scheduled %}
+            This item is scheduled for {{ item.published_at|date:"F j, Y, H:i" }} and is not visible to the public yet.
+          {% else %}
+            This item is a draft and is only visible to staff.
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <header class="mb-4">
+        <h1 class="display-6 fw-bold">{{ item.title }}</h1>
+        <p class="text-body-secondary mb-0">
+          {% if item.published_at %}
+            <time datetime="{{ item.published_at|date:'c' }}">{{ item.published_at|date:"F j, Y" }}</time>
+          {% endif %}
+          {% if item.category %} · <a href="{{ item.category.get_absolute_url }}">{{ item.category.name }}</a>{% endif %}
+        </p>
+      </header>
+
+      {% if item.featured_image %}
+        <figure class="mb-4">
+          <img src="{{ item.featured_image.url }}" class="img-fluid rounded detail-image" alt="{{ item.title }}">
+        </figure>
+      {% endif %}
+
+      {% if item.summary %}
+        <p class="lead">{{ item.summary }}</p>
+      {% endif %}
+
+      <div class="content-body">
+        {{ item.body|linebreaks }}
+      </div>
+
+      {% if perms.content.change_content %}
+        <p class="mt-4">
+          <a class="btn btn-outline-secondary btn-sm" href="{% url 'admin:content_content_change' item.pk %}">Edit in admin</a>
+        </p>
+      {% endif %}
+    </article>
+  </div>
+
+  {% if related %}
+    <section class="mt-5" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="h4 mb-3">More in {{ item.category.name }}</h2>
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for item in related %}
+          <div class="col">{% include "partials/_content_card.html" %}</div>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+</div>
+{% endblock %}
