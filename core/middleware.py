@@ -1,6 +1,31 @@
 from django.conf import settings
 
 
+class HealthCheckMiddleware:
+    """
+    Answers ``/healthz/`` before any other middleware runs.
+
+    Platform health checkers (Render, load balancers) often call the app with
+    an internal Host header such as ``localhost:10000``. Handling the probe
+    first means it never trips ALLOWED_HOSTS validation or the HTTPS
+    redirect, while every other URL keeps full host checking. The response
+    contains no request data, so skipping host validation here is safe.
+    Must be first in MIDDLEWARE.
+    """
+
+    path = "/healthz/"
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if request.path == self.path:
+            from .views import healthz
+
+            return healthz(request)
+        return self.get_response(request)
+
+
 class SecurityHeadersMiddleware:
     """
     Adds Content-Security-Policy and Permissions-Policy headers.

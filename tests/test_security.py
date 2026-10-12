@@ -156,3 +156,61 @@ class TestProductionSettings:
         finally:
             monkeypatch.undo()
             importlib.reload(settings_module)
+
+
+class TestPlatformSettings:
+    """Settings used on Render (and similar platforms)."""
+
+    def _reload(self, monkeypatch, **env):
+        import importlib
+
+        import config.settings as settings_module
+
+        for key, value in env.items():
+            monkeypatch.setenv(key, value)
+        monkeypatch.setattr("environ.Env.read_env", lambda *a, **k: None)
+        return importlib.reload(settings_module)
+
+    def _restore(self, monkeypatch):
+        import importlib
+
+        import config.settings as settings_module
+
+        monkeypatch.undo()
+        importlib.reload(settings_module)
+
+    def test_render_hostname_is_allowed(self, monkeypatch):
+        try:
+            fresh = self._reload(
+                monkeypatch, DEBUG="False", ALLOWED_HOSTS="", RENDER_EXTERNAL_HOSTNAME="cms.onrender.com"
+            )
+            assert "cms.onrender.com" in fresh.ALLOWED_HOSTS
+            assert "https://cms.onrender.com" in fresh.CSRF_TRUSTED_ORIGINS
+        finally:
+            self._restore(monkeypatch)
+
+    def test_database_url_is_used(self, monkeypatch):
+        try:
+            fresh = self._reload(
+                monkeypatch, DATABASE_URL="postgres://u:p@db.internal:5433/cmsdb"
+            )
+            db = fresh.DATABASES["default"]
+            assert (db["NAME"], db["USER"], db["HOST"], db["PORT"]) == ("cmsdb", "u", "db.internal", 5433)
+            assert db["ENGINE"] == "django.db.backends.postgresql"
+            assert db["CONN_HEALTH_CHECKS"] is True
+        finally:
+            self._restore(monkeypatch)
+
+
+class TestHealthCheckHost:
+    def test_health_check_ignores_unknown_host(self, client):
+        response = client.get("/healthz/", HTTP_HOST="localhost:10000")
+        assert response.status_code == 200
+        assert response.json()["status"] == "ok"
+
+    def test_other_pages_still_validate_host(self, client):
+        assert client.get("/", HTTP_HOST="evil.example").status_code == 400
+
+    @override_settings(SECURE_SSL_REDIRECT=True)
+    def test_health_check_not_redirected(self, client):
+        assert client.get("/healthz/", HTTP_HOST="localhost:10000").status_code == 200

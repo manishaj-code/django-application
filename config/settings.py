@@ -33,6 +33,12 @@ ALLOWED_HOSTS = env.list(
 )
 CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 
+# Render sets this to the service's public host name (xxx.onrender.com).
+RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", default="")
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+    CSRF_TRUSTED_ORIGINS.append(f"https://{RENDER_EXTERNAL_HOSTNAME}")
+
 SITE_NAME = env("SITE_NAME", default="Django CMS")
 
 ADMIN_URL = env("ADMIN_URL", default="admin/")
@@ -55,6 +61,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "core.middleware.HealthCheckMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -89,19 +96,27 @@ TEMPLATES = [
 # Database (PostgreSQL)
 # ---------------------------------------------------------------------------
 
-DATABASES = {
-    "default": {
+# Either DATABASE_URL (postgres://user:pass@host:port/name, as provided by
+# Render and most platforms) or the individual DB_* variables.
+if env("DATABASE_URL", default=""):
+    _database = env.db("DATABASE_URL")
+else:
+    _database = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": env("DB_NAME"),
         "USER": env("DB_USER"),
         "PASSWORD": env("DB_PASSWORD"),
         "HOST": env("DB_HOST", default="localhost"),
         "PORT": env("DB_PORT", default="5432"),
+    }
+_database.update(
+    {
         "CONN_MAX_AGE": env.int("DB_CONN_MAX_AGE", default=60),
         "CONN_HEALTH_CHECKS": True,
         "OPTIONS": {"sslmode": env("DB_SSLMODE", default="prefer")},
     }
-}
+)
+DATABASES = {"default": _database}
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -230,6 +245,10 @@ STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
+
+# Let Django serve MEDIA_URL itself when no web server/object storage is in
+# front of it (e.g. a single Render service). Fine for small sites only.
+SERVE_MEDIA = env.bool("SERVE_MEDIA", default=False)
 
 MAX_UPLOAD_SIZE_MB = env.int("MAX_UPLOAD_SIZE_MB", default=5)
 ALLOWED_IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "gif"]

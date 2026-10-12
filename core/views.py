@@ -110,3 +110,14 @@ def server_error(request):
 
 def csrf_failure(request, reason=""):
     return render(request, "errors/403_csrf.html", status=403)
+
+
+# TEMPORARY (removed after deployment check): shows the caller their own
+# proxy-related request headers so the rate limiter's client-IP setting can
+# be configured for the hosting platform.
+@never_cache
+@require_GET
+def proxy_headers(request):
+    keys = ["REMOTE_ADDR", "HTTP_X_FORWARDED_FOR", "HTTP_TRUE_CLIENT_IP",
+            "HTTP_CF_CONNECTING_IP", "HTTP_X_REAL_IP", "HTTP_X_FORWARDED_PROTO"]
+    return JsonResponse({key: request.META.get(key) for key in keys})
